@@ -32,7 +32,7 @@ namespace AuthIdentity.Web
                 opt.UseSqlServer(Configuration["ConnectionStrings:DefaultConnectionString"]);
             });
 
-            services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppIdentityDbContext>();
+            services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<AppIdentityDbContext>();
 
 
             services.AddMvc(options => options.EnableEndpointRouting = false);
