@@ -1,3 +1,4 @@
+using AuthIdentity.Web.CustomValidation;
 using AuthIdentity.Web.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -40,7 +41,7 @@ namespace AuthIdentity.Web
                 opt.Password.RequireUppercase = false;
                 opt.Password.RequireDigit = false;
 
-            }).AddEntityFrameworkStores<AppIdentityDbContext>();
+            }).AddPasswordValidator<CustomPasswordValidator>().AddEntityFrameworkStores<AppIdentityDbContext>();
 
 
             services.AddMvc(options => options.EnableEndpointRouting = false);
