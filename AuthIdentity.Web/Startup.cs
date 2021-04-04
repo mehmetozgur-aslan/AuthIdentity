@@ -33,6 +33,27 @@ namespace AuthIdentity.Web
                 opt.UseSqlServer(Configuration["ConnectionStrings:DefaultConnectionString"]);
             });
 
+
+            //cookie yapýsý
+
+            CookieBuilder cookieBuilder = new CookieBuilder();
+
+            cookieBuilder.Name = "MyBlog";
+            cookieBuilder.HttpOnly = false;
+            cookieBuilder.SameSite = SameSiteMode.Lax;
+            cookieBuilder.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+
+            services.ConfigureApplicationCookie(opts =>
+            {
+                opts.LoginPath = new PathString("/Home/Login");
+                opts.LogoutPath = new PathString("/Member/LogOut");
+                opts.Cookie = cookieBuilder;
+                opts.SlidingExpiration = true;
+                opts.ExpireTimeSpan = System.TimeSpan.FromDays(60);
+                opts.AccessDeniedPath = new PathString("/Member/AccessDenied");
+            });
+
+
             services.AddIdentity<AppUser, AppRole>(opt =>
             {
                 opt.User.RequireUniqueEmail = true;
