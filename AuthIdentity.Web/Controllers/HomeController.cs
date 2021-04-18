@@ -25,8 +25,9 @@ namespace AuthIdentity.Web.Controllers
             return View();
         }
 
-        public IActionResult Login()
+        public IActionResult Login(string ReturnUrl)
         {
+            TempData["ReturnUrl"] = ReturnUrl;
             return View();
         }
 
@@ -109,7 +110,7 @@ namespace AuthIdentity.Web.Controllers
                 user.Email = userViewModel.Email;
                 user.PhoneNumber = userViewModel.PhoneNumber;
 
-                IdentityResult result = await _userManager.CreateAsync(user,userViewModel.Password);
+                IdentityResult result = await _userManager.CreateAsync(user, userViewModel.Password);
 
                 if (result.Succeeded)
                 {
@@ -119,7 +120,7 @@ namespace AuthIdentity.Web.Controllers
                 {
                     foreach (IdentityError err in result.Errors)
                     {
-                        ModelState.AddModelError("",err.Description);
+                        ModelState.AddModelError("", err.Description);
                     }
                 }
 

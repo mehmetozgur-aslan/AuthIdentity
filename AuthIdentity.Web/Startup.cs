@@ -36,6 +36,22 @@ namespace AuthIdentity.Web
 
             //cookie yapýsý
 
+           
+
+
+            services.AddIdentity<AppUser, AppRole>(opt =>
+            {
+                opt.User.RequireUniqueEmail = true;
+                opt.User.AllowedUserNameCharacters = "abcçdefgðhýijklmnoçpqrsþtuüvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._";
+
+                opt.Password.RequiredLength = 4;
+                opt.Password.RequireNonAlphanumeric = false;
+                opt.Password.RequireLowercase = false;
+                opt.Password.RequireUppercase = false;
+                opt.Password.RequireDigit = false;
+
+            }).AddPasswordValidator<CustomPasswordValidator>().AddUserValidator<CustomUserValidator>().AddErrorDescriber<CustomIdentityErrorDescriber>().AddEntityFrameworkStores<AppIdentityDbContext>();
+
             CookieBuilder cookieBuilder = new CookieBuilder();
 
             cookieBuilder.Name = "MyBlog";
@@ -53,21 +69,6 @@ namespace AuthIdentity.Web
                 opts.AccessDeniedPath = new PathString("/Member/AccessDenied");
             });
 
-
-            services.AddIdentity<AppUser, AppRole>(opt =>
-            {
-                opt.User.RequireUniqueEmail = true;
-                opt.User.AllowedUserNameCharacters = "abcçdefgðhýijklmnoçpqrsþtuüvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._";
-
-                opt.Password.RequiredLength = 4;
-                opt.Password.RequireNonAlphanumeric = false;
-                opt.Password.RequireLowercase = false;
-                opt.Password.RequireUppercase = false;
-                opt.Password.RequireDigit = false;
-
-            }).AddPasswordValidator<CustomPasswordValidator>().AddUserValidator<CustomUserValidator>().AddErrorDescriber<CustomIdentityErrorDescriber>().AddEntityFrameworkStores<AppIdentityDbContext>();
-
-
             services.AddMvc(options => options.EnableEndpointRouting = false);
         }
 
@@ -76,10 +77,10 @@ namespace AuthIdentity.Web
         {
             app.UseDeveloperExceptionPage();
             app.UseStatusCodePages();
-            app.UseStaticFiles();
-            app.UseMvcWithDefaultRoute();
+            app.UseStaticFiles();           
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseMvcWithDefaultRoute();
         }
     }
 }
